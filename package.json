@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/math-tools-unary",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Multiple dispatch for unary mathematical functions.",
   "license": "Apache-2.0",
   "author": {
