@@ -1,0 +1,32 @@
+{
+  "name": "@stdlib/math-tools-unary",
+  "version": "0.0.0",
+  "description": "Multiple dispatch for unary mathematical functions.",
+  "license": "Apache-2.0",
+  "main": "./bundle.js",
+  "homepage": "https://stdlib.io",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stdlib-js/math-tools-unary.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stdlib-js/stdlib/issues"
+  },
+  "keywords": [
+    "stdlib",
+    "stdmath",
+    "mathematics",
+    "math",
+    "tools",
+    "unary",
+    "multiple",
+    "dispatch",
+    "multimethod",
+    "multimethods",
+    "ndarray"
+  ],
+  "funding": {
+    "type": "patreon",
+    "url": "https://www.patreon.com/athan"
+  }
+}
