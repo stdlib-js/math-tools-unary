@@ -30,7 +30,7 @@ var dispatch = require( './../../dist' );
 
 // FIXTURES //
 
-var table = require( './../..xtures/table.js' );
+var table = require( './../fixtures/table.js' );
 
 
 // TESTS //
