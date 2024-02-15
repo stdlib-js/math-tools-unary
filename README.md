@@ -52,6 +52,11 @@ limitations under the License.
 ## Usage
 
 ```javascript
+import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+```
+The previous example will load the latest bundled code from the esm branch. Alternatively, you may load a specific version by loading the file from one of the [tagged bundles](https://github.com/stdlib-js/math-tools-unary/tags). For example,
+
+```javascript
 import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.2.0-esm/index.mjs';
 ```
 
@@ -268,7 +273,7 @@ import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs
 import Float64Array from 'https://cdn.jsdelivr.net/gh/stdlib-js/array-float64@esm/index.mjs';
 import array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-array@esm/index.mjs';
 import ind2sub from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-ind2sub@esm/index.mjs';
-import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.2.0-esm/index.mjs';
+import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
 
 var table;
 var sub;
