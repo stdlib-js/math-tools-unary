@@ -52,6 +52,11 @@ limitations under the License.
 ## Usage
 
 ```javascript
+import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@deno/mod.js';
+```
+The previous example will load the latest bundled code from the deno branch. Alternatively, you may load a specific version by loading the file from one of the [tagged bundles](https://github.com/stdlib-js/math-tools-unary/tags). For example,
+
+```javascript
 import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.2.0-deno/mod.js';
 ```
 
@@ -263,7 +268,7 @@ import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs
 import Float64Array from 'https://cdn.jsdelivr.net/gh/stdlib-js/array-float64@deno/mod.js';
 import array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-array@deno/mod.js';
 import ind2sub from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-ind2sub@deno/mod.js';
-import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.2.0-deno/mod.js';
+import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@deno/mod.js';
 
 var table;
 var sub;
