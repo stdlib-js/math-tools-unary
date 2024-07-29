@@ -52,7 +52,7 @@ limitations under the License.
 ## Usage
 
 ```javascript
-import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.2.2-esm/index.mjs';
 ```
 
 #### dispatch( table )
@@ -268,7 +268,7 @@ import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs
 import Float64Array from 'https://cdn.jsdelivr.net/gh/stdlib-js/array-float64@esm/index.mjs';
 import array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-array@esm/index.mjs';
 import ind2sub from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-ind2sub@esm/index.mjs';
-import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.2.2-esm/index.mjs';
 
 var table;
 var sub;
