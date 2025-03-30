@@ -37,8 +37,8 @@
     "url": "https://github.com/stdlib-js/stdlib/issues"
   },
   "dependencies": {
+    "@stdlib/array-base-assert-contains": "^0.2.2",
     "@stdlib/array-base-copy-indexed": "^0.2.2",
-    "@stdlib/assert-contains": "^0.2.2",
     "@stdlib/assert-has-own-property": "^0.2.2",
     "@stdlib/assert-is-collection": "^0.2.2",
     "@stdlib/assert-is-complex-like": "^0.2.2",
@@ -56,7 +56,7 @@
     "@stdlib/ndarray-dtypes": "^0.3.0",
     "@stdlib/ndarray-orders": "^0.2.2",
     "@stdlib/string-format": "^0.2.2",
-    "@stdlib/types": "^0.3.2",
+    "@stdlib/types": "^0.4.3",
     "@stdlib/utils-define-nonenumerable-read-only-property": "^0.2.2",
     "@stdlib/utils-keys": "^0.2.2",
     "@stdlib/error-tools-fmtprodmsg": "^0.2.2"
