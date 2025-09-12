@@ -21,18 +21,23 @@
 // MODULES //
 
 var bench = require( '@stdlib/bench-harness' );
-var uniform = require( '@stdlib/random-base-uniform' ).factory;
+var uniform = require( '@stdlib/random-array-uniform' );
 var isnan = require( '@stdlib/math-base-assert-is-nan' );
 var pow = require( '@stdlib/math-base-special-pow' );
-var Float64Array = require( '@stdlib/array-float64' );
 var ndarray = require( '@stdlib/ndarray-ctor' );
+var getData = require( '@stdlib/ndarray-data-buffer' );
+var format = require( '@stdlib/string-format' );
 var pkg = require( './../package.json' ).name;
 var abs = require( './fixtures/dispatcher.js' );
 
 
 // VARIABLES //
 
-var rand = uniform( -100.0, 100.0 );
+var DTYPES = [
+	'float64',
+	'float32',
+	'generic'
+];
 
 
 // FUNCTIONS //
@@ -41,21 +46,18 @@ var rand = uniform( -100.0, 100.0 );
 * Creates a benchmark function.
 *
 * @private
-* @param {PositiveInteger} len - array length
+* @param {PositiveInteger} size - array size
+* @param {string} dtype - data type
 * @returns {Function} benchmark function
 */
-function createBenchmark( len ) {
+function createBenchmark( size, dtype ) {
 	var buf;
 	var x;
-	var y;
-	var i;
 
-	buf = new Float64Array( len );
-	for ( i = 0; i < len; i++ ) {
-		buf[ i ] = rand();
-	}
-	x = ndarray( 'float64', buf, [ len ], [ 1 ], 0, 'row-major' );
-	y = ndarray( x.dtype, new Float64Array( len ), x.shape, x.strides, x.offset, x.order ); // eslint-disable-line max-len
+	buf = uniform( size*2, -10.0, 10.0, {
+		'dtype': dtype
+	});
+	x = new ndarray( dtype, buf, [ size/2, 2, 1 ], [ 4, 1, 1 ], 0, 'row-major' );
 
 	return benchmark;
 
@@ -66,17 +68,18 @@ function createBenchmark( len ) {
 	* @param {Benchmark} b - benchmark instance
 	*/
 	function benchmark( b ) {
+		var y;
 		var i;
 
 		b.tic();
 		for ( i = 0; i < b.iterations; i++ ) {
-			abs.assign( x, y );
-			if ( isnan( y.data[ i%len ] ) ) {
-				b.fail( 'should not return NaN' );
+			y = abs( x );
+			if ( typeof y !== 'object' ) {
+				b.fail( 'should return an ndarray' );
 			}
 		}
 		b.toc();
-		if ( isnan( y.data[ i%len ] ) ) {
+		if ( isnan( getData( y )[ i%size ] ) ) {
 			b.fail( 'should not return NaN' );
 		}
 		b.pass( 'benchmark finished' );
@@ -93,19 +96,24 @@ function createBenchmark( len ) {
 * @private
 */
 function main() {
-	var len;
+	var size;
 	var min;
 	var max;
+	var dt;
 	var f;
 	var i;
+	var j;
 
 	min = 1; // 10^min
 	max = 6; // 10^max
 
-	for ( i = min; i <= max; i++ ) {
-		len = pow( 10, i );
-		f = createBenchmark( len );
-		bench( pkg+'::ndarray:assign:contiguous=true,ndims=1,dtype=float64,len='+len, f );
+	for ( j = 0; j < DTYPES.length; j++ ) {
+		dt = DTYPES[ j ];
+		for ( i = min; i <= max; i++ ) {
+			size = pow( 10, i );
+			f = createBenchmark( size, dt );
+			bench( format( '%s:contiguous=false,ndims=3,dtype=%s,size=%d', pkg, dt, size ), f );
+		}
 	}
 }
 
