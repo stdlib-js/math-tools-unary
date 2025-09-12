@@ -25,6 +25,7 @@
 
 <details>
 
+-   [`a657481`](https://github.com/stdlib-js/stdlib/commit/a657481f37f58ef7158aff3363a9ce1819766d7a) - **docs:** add missing 'that' in comment _(by Philipp Burckhardt)_
 -   [`1b46342`](https://github.com/stdlib-js/stdlib/commit/1b46342c2fcca2033b3736740d77ab42902a3483) - **docs:** add copy _(by Athan Reines)_
 -   [`fe25ba3`](https://github.com/stdlib-js/stdlib/commit/fe25ba3ab6e5def2aa99901b2e53cbe45a76e284) - **refactor:** remove support for non-ndarray arguments _(by Athan Reines)_
 -   [`07f7c05`](https://github.com/stdlib-js/stdlib/commit/07f7c0522c73e6ad9505e1d45035ae439344200d) - **test:** use standardized assertion messages and fix lint errors _(by Philipp Burckhardt)_
