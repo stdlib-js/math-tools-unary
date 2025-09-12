@@ -33,11 +33,17 @@ limitations under the License.
 
 [![NPM version][npm-image]][npm-url] [![Build Status][test-image]][test-url] [![Coverage Status][coverage-image]][coverage-url] <!-- [![dependencies][dependencies-image]][dependencies-url] -->
 
-> Multiple dispatch for unary mathematical functions.
+> Create a function which performs element-wise computation by applying a unary function to each element in an input ndarray.
 
 <!-- Section to include introductory text. Make sure to keep an empty line after the intro `section` element and another before the `/section` close. -->
 
 <section class="intro">
+
+The purpose of this package is to provide a thin wrapper around a lower-level interface supporting multiple dispatch based on the data types of provided ndarray arguments. The wrapper performs the following tasks:
+
+-   validates input arguments.
+-   casts input ndarrays according to a casting policy.
+-   allocates an output ndarray according to an output data type policy.
 
 </section>
 
@@ -45,191 +51,235 @@ limitations under the License.
 
 <!-- Package usage documentation. -->
 
+<section class="installation">
 
+## Installation
+
+```bash
+npm install @stdlib/math-tools-unary
+```
+
+Alternatively,
+
+-   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm`][esm-url] branch (see [README][esm-readme]).
+-   If you are using Deno, visit the [`deno`][deno-url] branch (see [README][deno-readme] for usage intructions).
+-   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd`][umd-url] branch (see [README][umd-readme]).
+
+The [branches.md][branches-url] file summarizes the available branches and displays a diagram illustrating their relationships.
+
+To view installation and usage instructions specific to each branch build, be sure to explicitly navigate to the respective README files on each branch, as linked to above.
+
+</section>
 
 <section class="usage">
 
 ## Usage
 
 ```javascript
-import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+var factory = require( '@stdlib/math-tools-unary' );
 ```
 
-#### dispatch( table )
+#### factory( fcn, idtypes, odtypes, policies )
 
-Returns a function which dispatches to specified functions based on input argument types.
+Returns a function which performs element-wise computation by applying a unary function to each element in an input ndarray.
 
 <!-- eslint-disable array-element-newline -->
 
 ```javascript
-import nabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-base-special-abs@esm/index.mjs';
-import dabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-dabs@esm/index.mjs';
-import sabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-sabs@esm/index.mjs';
-import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs@esm/index.mjs';
+var base = require( '@stdlib/math-base-special-abs' );
+var dispatch = require( '@stdlib/ndarray-dispatch' );
+var unary = require( '@stdlib/ndarray-base-unary' );
+var ndarray2array = require( '@stdlib/ndarray-to-array' );
+var array = require( '@stdlib/ndarray-array' );
 
-var table = {
-    'scalar': [
-        'number', nabs
-    ],
-    'array': [
-        'float64', dabs,
-        'float32', sabs,
-        'generic', gabs
-    ],
-    'ndarray': [
-        'float64', dabs.ndarray,
-        'float32', sabs.ndarray,
-        'generic', gabs.ndarray
-    ]
+var types = [
+    'float64', 'float64',
+    'float64', 'generic',
+    'generic', 'generic'
+];
+var data = [
+    base,
+    base,
+    base
+];
+var dispatcher = dispatch( unary, types, data, 2, 1, 1 );
+
+var idt = [ 'float64', 'generic' ];
+var odt = idt;
+
+var policies = {
+    'output': 'real_and_generic',
+    'casting': 'none'
 };
-
-var abs = dispatch( table );
+var ufunc = factory( dispatcher, [ idt ], odt, policies );
 ```
 
-The function accepts the following arguments:
+The function has the following arguments:
 
--   **table**: resolution table object which maps input argument types to corresponding implementations.
+-   **fcn**: function which applies a unary function to each element in an ndarray and assigns results to an output ndarray.
 
-A `table` resolution object may contain one or more of the following fields:
+-   **idtypes**: list containing lists of supported input data types for each input ndarray argument.
 
--   **scalar**: strided look-up table for scalar arguments. Implementation functions must accept a single input argument: a scalar value. Supported data types: `'number'` and `'complex'`.
+-   **odtypes**: list of supported output data types.
 
--   **array**: strided look-up table for array-like object arguments. Implementation functions must follow strided array interface argument conventions:
+-   **policies**: dispatch policies. Must have the following properties:
 
-    ```text
-    fcn( N, x, strideX, y, strideY )
-    ```
+    -   **output**: output data type [policy][@stdlib/ndarray/output-dtype-policies].
+    -   **casting**: input ndarray casting [policy][@stdlib/ndarray/input-casting-policies].
 
-    where
+#### ufunc( x\[, options] )
 
-    -   **N**: number of indexed elements.
-    -   **x**: input strided array.
-    -   **strideX**: index increment for `x`.
-    -   **y**: destination strided array.
-    -   **strideY**: index increment for `y`.
-
-    Supported array data types consist of all supported [ndarray][@stdlib/ndarray/dtypes] data types.
-
--   **ndarray**: strided look-up table for [`ndarray`][@stdlib/ndarray/ctor] arguments. Implementation functions must follow strided array ndarray interface argument conventions:
-
-    ```text
-    fcn( N, x, strideX, offsetX, y, strideY, offsetY )
-    ```
-
-    where
-
-    -   **N**: number of indexed elements.
-    -   **x**: input strided array (i.e., underlying input [`ndarray`][@stdlib/ndarray/ctor] buffer).
-    -   **strideX**: index increment for `x`.
-    -   **offsetX**: starting index for `x`.
-    -   **y**: destination strided array (i.e., underlying output [`ndarray`][@stdlib/ndarray/ctor] buffer).
-    -   **strideY**: index increment for `y`.
-    -   **offsetY**: starting index for `y`.
-
-    Supported data types consist of all supported [ndarray][@stdlib/ndarray/dtypes] data types.
-
-Each strided look-up table should be comprised as follows:
-
-```text
-[ <dtype>, <fcn>, <dtype>, <fcn>, ... ]
-```
-
-If an argument's data type is **not** found in the argument's corresponding look-up table and if a `'generic'` data type is present in that same table, the returned dispatch function will resolve the "generic" implementation. In other words, an implementation associated with a `'generic'` data type will be treated as the default implementation.
-
-If unable to resolve an implementation for a provided argument data type, the returned function throws an error.
-
-* * *
-
-#### dispatcher( x )
-
-Dispatches to an underlying implementation based the data type of `x`.
+Performs element-wise computation.
 
 <!-- eslint-disable array-element-newline -->
 
 ```javascript
-import nabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-base-special-abs@esm/index.mjs';
-import dabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-dabs@esm/index.mjs';
-import sabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-sabs@esm/index.mjs';
-import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs@esm/index.mjs';
+var base = require( '@stdlib/math-base-special-abs' );
+var dispatch = require( '@stdlib/ndarray-dispatch' );
+var unary = require( '@stdlib/ndarray-base-unary' );
+var ndarray2array = require( '@stdlib/ndarray-to-array' );
+var array = require( '@stdlib/ndarray-array' );
 
-var table = {
-    'scalar': [
-        'number', nabs
-    ],
-    'array': [
-        'float64', dabs,
-        'float32', sabs,
-        'generic', gabs
-    ],
-    'ndarray': [
-        'float64', dabs.ndarray,
-        'float32', sabs.ndarray,
-        'generic', gabs.ndarray
-    ]
+var types = [
+    'float64', 'float64',
+    'float64', 'generic',
+    'generic', 'generic'
+];
+var data = [
+    base,
+    base,
+    base
+];
+var dispatcher = dispatch( unary, types, data, 2, 1, 1 );
+
+var idt = [ 'float64', 'generic' ];
+var odt = idt;
+
+var policies = {
+    'output': 'real_and_generic',
+    'casting': 'none'
 };
+var ufunc = factory( dispatcher, [ idt ], odt, policies );
 
-var abs = dispatch( table );
-
-var y = abs( -1.0 );
-// returns 1.0
-```
-
-The returned dispatch function accepts the following arguments:
-
--   **x**: input [`ndarray`][@stdlib/ndarray/ctor], array-like object, or number. If provided an [`ndarray`][@stdlib/ndarray/ctor] or array-like object, the function performs element-wise computation.
-
-If provided an [`ndarray`][@stdlib/ndarray/ctor], the function returns an [`ndarray`][@stdlib/ndarray/ctor] having the same shape and data type as `x`.
-
-<!-- eslint-disable array-element-newline -->
-
-```javascript
-import dabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-dabs@esm/index.mjs';
-import sabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-sabs@esm/index.mjs';
-import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs@esm/index.mjs';
-import array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-array@esm/index.mjs';
-
-var table = {
-    'ndarray': [
-        'float64', dabs.ndarray,
-        'float32', sabs.ndarray,
-        'generic', gabs.ndarray
-    ]
-};
-
-var abs = dispatch( table );
-
-var x = array( [ [ -1.0, -2.0 ], [ -3.0, -4.0 ] ] ); // 2x2
-var y = abs( x );
+var x = array( [ [ -1.0, -2.0 ], [ -3.0, -4.0 ] ] );
 // returns <ndarray>
 
-var v = y.get( 0, 1 );
-// returns 2.0
+var y = ufunc( x );
+// returns <ndarray>
+
+var arr = ndarray2array( y );
+// returns [ [ 1.0, 2.0 ], [ 3.0, 4.0 ] ]
 ```
 
-If provided an array-like object, the function returns an array-like object having the same length and data type as `x`.
+The function has the following parameters:
+
+-   **x**: input ndarray.
+-   **options**: function options (_optional_).
+
+The function accepts the following options:
+
+-   **dtype**: output ndarray data type. Setting this option, overrides the output data type policy.
+-   **order**: output ndarray order.
+
+By default, the function returns an ndarray having a data type determined by the output data type policy. To override the default behavior, set the `dtype` option.
 
 <!-- eslint-disable array-element-newline -->
 
 ```javascript
-import dabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-dabs@esm/index.mjs';
-import sabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-sabs@esm/index.mjs';
-import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs@esm/index.mjs';
-import Float64Array from 'https://cdn.jsdelivr.net/gh/stdlib-js/array-float64@esm/index.mjs';
+var base = require( '@stdlib/math-base-special-abs' );
+var dispatch = require( '@stdlib/ndarray-dispatch' );
+var unary = require( '@stdlib/ndarray-base-unary' );
+var getDType = require( '@stdlib/ndarray-dtype' );
+var array = require( '@stdlib/ndarray-array' );
 
-var table = {
-    'array': [
-        'float64', dabs,
-        'float32', sabs,
-        'generic', gabs
-    ]
+var types = [
+    'float64', 'float64',
+    'float64', 'generic',
+    'generic', 'generic'
+];
+var data = [
+    base,
+    base,
+    base
+];
+var dispatcher = dispatch( unary, types, data, 2, 1, 1 );
+
+var idt = [ 'float64', 'generic' ];
+var odt = idt;
+
+var policies = {
+    'output': 'real_and_generic',
+    'casting': 'none'
 };
+var ufunc = factory( dispatcher, [ idt ], odt, policies );
 
-var abs = dispatch( table );
+var x = array( [ [ -1.0, -2.0 ], [ -3.0, -4.0 ] ] );
+// returns <ndarray>
 
-var x = new Float64Array( [ -1.0, -2.0 ] );
-var y = abs( x );
-// returns <Float64Array>[ 1.0, 2.0 ]
+var y = ufunc( x, {
+    'dtype': 'generic'
+});
+// returns <ndarray>
+
+var dt = getDType( y );
+// returns 'generic'
 ```
+
+#### ufunc.assign( x, out )
+
+Performs element-wise computation and assigns results to a provided output ndarray.
+
+<!-- eslint-disable array-element-newline -->
+
+```javascript
+var base = require( '@stdlib/math-base-special-abs' );
+var dispatch = require( '@stdlib/ndarray-dispatch' );
+var unary = require( '@stdlib/ndarray-base-unary' );
+var ndarray2array = require( '@stdlib/ndarray-to-array' );
+var zerosLike = require( '@stdlib/ndarray-zeros-like' );
+var array = require( '@stdlib/ndarray-array' );
+
+var types = [
+    'float64', 'float64',
+    'float64', 'generic',
+    'generic', 'generic'
+];
+var data = [
+    base,
+    base,
+    base
+];
+var dispatcher = dispatch( unary, types, data, 2, 1, 1 );
+
+var idt = [ 'float64', 'generic' ];
+var odt = idt;
+
+var policies = {
+    'output': 'real_and_generic',
+    'casting': 'none'
+};
+var ufunc = factory( dispatcher, [ idt ], odt, policies );
+
+var x = array( [ [ -1.0, -2.0 ], [ -3.0, -4.0 ] ] );
+// returns <ndarray>
+
+var y = zerosLike( x );
+// returns <ndarray>
+
+var out = ufunc.assign( x, y );
+// returns <ndarray>
+
+var bool = ( out === y );
+// returns true
+
+var arr = ndarray2array( out );
+// returns [ [ 1.0, 2.0 ], [ 3.0, 4.0 ] ]
+```
+
+The method has the following parameters:
+
+-   **x**: input ndarray.
+-   **out**: output ndarray.
 
 </section>
 
@@ -239,13 +289,26 @@ var y = abs( x );
 
 <section class="notes">
 
+## Notes
+
+-   A provided unary function should have the following signature:
+
+    ```text
+    f( x, y )
+    ```
+
+    where
+
+    -   **x**: input ndarray.
+    -   **y**: output ndarray.
+
+-   The output data type policy only applies to the function returned by the main function. For the `assign` method, the output ndarray is allowed to have any supported output data type.
+
 </section>
 
 <!-- /.notes -->
 
 <!-- Package usage examples. -->
-
-* * *
 
 <section class="examples">
 
@@ -255,73 +318,50 @@ var y = abs( x );
 
 <!-- eslint no-undef: "error" -->
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<body>
-<script type="module">
-
-import nabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-base-special-abs@esm/index.mjs';
-import dabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-dabs@esm/index.mjs';
-import sabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-sabs@esm/index.mjs';
-import gabs from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-strided-special-abs@esm/index.mjs';
-import Float64Array from 'https://cdn.jsdelivr.net/gh/stdlib-js/array-float64@esm/index.mjs';
-import array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-array@esm/index.mjs';
-import ind2sub from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-ind2sub@esm/index.mjs';
-import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
-
-var table;
-var sub;
-var abs;
-var sh;
-var x;
-var y;
-var i;
-
-// Define a table for resolving unary functions based on argument data types:
-table = {
-    'scalar': [
-        'number', nabs
-    ],
-    'array': [
-        'float64', dabs,
-        'float32', sabs,
-        'generic', gabs
-    ],
-    'ndarray': [
-        'float64', dabs.ndarray,
-        'float32', sabs.ndarray,
-        'generic', gabs.ndarray
-    ]
-};
+```javascript
+var base = require( '@stdlib/math-base-special-abs' );
+var basef = require( '@stdlib/math-base-special-absf' );
+var uniform = require( '@stdlib/random-uniform' );
+var dispatch = require( '@stdlib/ndarray-dispatch' );
+var ndarray2array = require( '@stdlib/ndarray-to-array' );
+var unary = require( '@stdlib/ndarray-base-unary' );
+var ufunc = require( '@stdlib/math-tools-unary' );
 
 // Create a function which dispatches based on argument data types:
-abs = dispatch( table );
+var types = [
+    'float64', 'float64',
+    'float32', 'float32',
+    'generic', 'generic'
+];
+var data = [
+    base,
+    basef,
+    base
+];
+var dispatcher = dispatch( unary, types, data, 2, 1, 1 );
 
-// Provide a number...
-y = abs( -1.0 );
-console.log( 'x = %d => abs(x) = %d', -1.0, y );
+// Define the supported input and output data types:
+var idt = [ 'float64', 'float32', 'generic' ];
+var odt = [ 'float64', 'float32', 'generic' ];
 
-// Provide an array-like object...
-x = new Float64Array( [ -1.0, -2.0, -3.0 ] );
-y = abs( x );
-for ( i = 0; i < x.length; i++ ) {
-    console.log( 'x_%d = %d => abs(x_%d) = %d', i, x[ i ], i, y[ i ] );
-}
+// Define dispatch policies:
+var policies = {
+    'output': 'same',
+    'casting': 'none'
+};
 
-// Provide an ndarray...
-x = array( [ [ -1.0, -2.0 ], [ -3.0, -4.0 ] ] );
-sh = x.shape;
+// Create a function performs element-wise computation:
+var abs = ufunc( dispatcher, [ idt ], odt, policies );
 
-y = abs( x );
-for ( i = 0; i < x.length; i++ ) {
-    sub = ind2sub( sh, i );
-    console.log( 'x_%d%d = %d => abs(x_%d%d) = %d', sub[ 0 ], sub[ 1 ], x.iget( i ), sub[ 0 ], sub[ 1 ], y.iget( i ) );
-}
+// Generate an array of random numbers:
+var x = uniform( [ 5, 5 ], -10.0, 10.0, {
+    'dtype': 'float64'
+});
+console.log( ndarray2array( x ) );
 
-</script>
-</body>
-</html>
+// Perform element-wise computation:
+var y = abs( x );
+console.log( ndarray2array( y ) );
 ```
 
 </section>
@@ -353,7 +393,7 @@ for ( i = 0; i < x.length; i++ ) {
 
 ## Notice
 
-This package is part of [stdlib][stdlib], a standard library with an emphasis on numerical and scientific computing. The library provides a collection of robust, high performance libraries for mathematics, statistics, streams, utilities, and more.
+This package is part of [stdlib][stdlib], a standard library for JavaScript and Node.js, with an emphasis on numerical and scientific computing. The library provides a collection of robust, high performance libraries for mathematics, statistics, streams, utilities, and more.
 
 For more information on the project, filing bug reports and feature requests, and guidance on how to develop [stdlib][stdlib], see the main project [repository][stdlib].
 
@@ -416,9 +456,9 @@ Copyright &copy; 2016-2025. The Stdlib [Authors][stdlib-authors].
 
 [stdlib-license]: https://raw.githubusercontent.com/stdlib-js/math-tools-unary/main/LICENSE
 
-[@stdlib/ndarray/ctor]: https://github.com/stdlib-js/ndarray-ctor/tree/esm
+[@stdlib/ndarray/output-dtype-policies]: https://github.com/stdlib-js/ndarray-output-dtype-policies
 
-[@stdlib/ndarray/dtypes]: https://github.com/stdlib-js/ndarray-dtypes/tree/esm
+[@stdlib/ndarray/input-casting-policies]: https://github.com/stdlib-js/ndarray-input-casting-policies
 
 </section>
 
