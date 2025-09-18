@@ -4,7 +4,7 @@
 
 <section class="release" id="unreleased">
 
-## Unreleased (2025-09-12)
+## Unreleased (2025-09-18)
 
 <section class="breaking-changes">
 
@@ -25,6 +25,7 @@
 
 <details>
 
+-   [`10beb0d`](https://github.com/stdlib-js/stdlib/commit/10beb0df73f0a3e2ac0f65c0549a12449984f73e) - **docs:** update type _(by Athan Reines)_
 -   [`bac2f1a`](https://github.com/stdlib-js/stdlib/commit/bac2f1af6007402efe470fffaf6a4c37645a3e28) - **docs:** fix comments _(by Athan Reines)_
 -   [`a657481`](https://github.com/stdlib-js/stdlib/commit/a657481f37f58ef7158aff3363a9ce1819766d7a) - **docs:** add missing 'that' in comment _(by Philipp Burckhardt)_
 -   [`1b46342`](https://github.com/stdlib-js/stdlib/commit/1b46342c2fcca2033b3736740d77ab42902a3483) - **docs:** add copy _(by Athan Reines)_
