@@ -58,6 +58,11 @@ The purpose of this package is to provide a thin wrapper around a lower-level in
 ## Usage
 
 ```javascript
+import factory from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@deno/mod.js';
+```
+The previous example will load the latest bundled code from the deno branch. Alternatively, you may load a specific version by loading the file from one of the [tagged bundles](https://github.com/stdlib-js/math-tools-unary/tags). For example,
+
+```javascript
 import factory from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.3.1-deno/mod.js';
 ```
 
@@ -307,7 +312,7 @@ import uniform from 'https://cdn.jsdelivr.net/gh/stdlib-js/random-uniform@deno/m
 import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-dispatch@deno/mod.js';
 import ndarray2array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-to-array@deno/mod.js';
 import unary from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-base-unary@deno/mod.js';
-import ufunc from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.3.1-deno/mod.js';
+import ufunc from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@deno/mod.js';
 
 // Create a function which dispatches based on argument data types:
 var types = [
