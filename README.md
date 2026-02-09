@@ -58,7 +58,7 @@ The purpose of this package is to provide a thin wrapper around a lower-level in
 ## Usage
 
 ```javascript
-import factory from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+import factory from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.3.1-esm/index.mjs';
 ```
 
 #### factory( fcn, idtypes, odtypes, policies )
@@ -312,7 +312,7 @@ import uniform from 'https://cdn.jsdelivr.net/gh/stdlib-js/random-uniform@esm/in
 import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-dispatch@esm/index.mjs';
 import ndarray2array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-to-array@esm/index.mjs';
 import unary from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-base-unary@esm/index.mjs';
-import ufunc from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+import ufunc from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.3.1-esm/index.mjs';
 
 // Create a function which dispatches based on argument data types:
 var types = [
