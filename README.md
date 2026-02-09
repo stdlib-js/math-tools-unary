@@ -58,6 +58,11 @@ The purpose of this package is to provide a thin wrapper around a lower-level in
 ## Usage
 
 ```javascript
+import factory from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
+```
+The previous example will load the latest bundled code from the esm branch. Alternatively, you may load a specific version by loading the file from one of the [tagged bundles](https://github.com/stdlib-js/math-tools-unary/tags). For example,
+
+```javascript
 import factory from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.3.1-esm/index.mjs';
 ```
 
@@ -312,7 +317,7 @@ import uniform from 'https://cdn.jsdelivr.net/gh/stdlib-js/random-uniform@esm/in
 import dispatch from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-dispatch@esm/index.mjs';
 import ndarray2array from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-to-array@esm/index.mjs';
 import unary from 'https://cdn.jsdelivr.net/gh/stdlib-js/ndarray-base-unary@esm/index.mjs';
-import ufunc from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@v0.3.1-esm/index.mjs';
+import ufunc from 'https://cdn.jsdelivr.net/gh/stdlib-js/math-tools-unary@esm/index.mjs';
 
 // Create a function which dispatches based on argument data types:
 var types = [
