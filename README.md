@@ -89,7 +89,6 @@ Returns a function which performs element-wise computation by applying a unary f
 var base = require( '@stdlib/math-base-special-abs' );
 var dispatch = require( '@stdlib/ndarray-dispatch' );
 var unary = require( '@stdlib/ndarray-base-unary' );
-var ndarray2array = require( '@stdlib/ndarray-to-array' );
 var array = require( '@stdlib/ndarray-array' );
 
 var types = [
@@ -137,7 +136,6 @@ Performs element-wise computation.
 var base = require( '@stdlib/math-base-special-abs' );
 var dispatch = require( '@stdlib/ndarray-dispatch' );
 var unary = require( '@stdlib/ndarray-base-unary' );
-var ndarray2array = require( '@stdlib/ndarray-to-array' );
 var array = require( '@stdlib/ndarray-array' );
 
 var types = [
@@ -165,10 +163,7 @@ var x = array( [ [ -1.0, -2.0 ], [ -3.0, -4.0 ] ] );
 // returns <ndarray>
 
 var y = ufunc( x );
-// returns <ndarray>
-
-var arr = ndarray2array( y );
-// returns [ [ 1.0, 2.0 ], [ 3.0, 4.0 ] ]
+// returns <ndarray>[ [ 1.0, 2.0 ], [ 3.0, 4.0 ] ]
 ```
 
 The function has the following parameters:
@@ -235,7 +230,6 @@ Performs element-wise computation and assigns results to a provided output ndarr
 var base = require( '@stdlib/math-base-special-abs' );
 var dispatch = require( '@stdlib/ndarray-dispatch' );
 var unary = require( '@stdlib/ndarray-base-unary' );
-var ndarray2array = require( '@stdlib/ndarray-to-array' );
 var zerosLike = require( '@stdlib/ndarray-zeros-like' );
 var array = require( '@stdlib/ndarray-array' );
 
@@ -267,13 +261,10 @@ var y = zerosLike( x );
 // returns <ndarray>
 
 var out = ufunc.assign( x, y );
-// returns <ndarray>
+// returns <ndarray>[ [ 1.0, 2.0 ], [ 3.0, 4.0 ] ]
 
 var bool = ( out === y );
 // returns true
-
-var arr = ndarray2array( out );
-// returns [ [ 1.0, 2.0 ], [ 3.0, 4.0 ] ]
 ```
 
 The method has the following parameters:
@@ -423,8 +414,8 @@ Copyright &copy; 2016-2026. The Stdlib [Authors][stdlib-authors].
 [npm-image]: http://img.shields.io/npm/v/@stdlib/math-tools-unary.svg
 [npm-url]: https://npmjs.org/package/@stdlib/math-tools-unary
 
-[test-image]: https://github.com/stdlib-js/math-tools-unary/actions/workflows/test.yml/badge.svg?branch=v0.3.1
-[test-url]: https://github.com/stdlib-js/math-tools-unary/actions/workflows/test.yml?query=branch:v0.3.1
+[test-image]: https://github.com/stdlib-js/math-tools-unary/actions/workflows/test.yml/badge.svg?branch=main
+[test-url]: https://github.com/stdlib-js/math-tools-unary/actions/workflows/test.yml?query=branch:main
 
 [coverage-image]: https://img.shields.io/codecov/c/github/stdlib-js/math-tools-unary/main.svg
 [coverage-url]: https://codecov.io/github/stdlib-js/math-tools-unary?branch=main
